@@ -35,41 +35,7 @@ for i in range(0,3):
         counter += 1
 
 
-#checking the win, player 1
-if values[0] == 1 & values[1] == 1 & values[2] == 1:
-    messagebox.showwarning("Game Over", "Player 1 has WON!")
-elif values[3] == 1 & values[4] == 1 & values[5] == 1:
-    messagebox.showwarning("Game Over", "Player 1 has WON!")
-elif values[6] == 1 & values[7] == 1 & values[8] == 1:
-    messagebox.showwarning("Game Over", "Player 1 has WON!")
-elif values[0] == 1 & values[3] == 1 & values[6] == 1:
-    messagebox.showwarning("Game Over", "Player 1 has WON!")
-elif values[1] == 1 & values[4] == 1 & values[7] == 1:
-    messagebox.showwarning("Game Over", "Player 1 has WON!")
-elif values[2] == 1 & values[5] == 1 & values[8] == 1:
-    messagebox.showwarning("Game Over", "Player 1 has WON!")
-elif values[6] == 1 & values[4] == 1 & values[2] == 1:
-    messagebox.showwarning("Game Over", "Player 1 has WON!")
-elif values[0] == 1 & values[4] == 1 & values[8] == 1:
-    messagebox.showwarning("Game Over", "Player 1 has WON!")
-
-#checking the win, player 2
-if values[0] == 2 & values[1] == 2 & values[2] == 2:
-    messagebox.showwarning("Game Over", "Player 2 has WON!")
-elif values[3] == 2 & values[4] == 2 & values[5] == 2:
-    messagebox.showwarning("Game Over", "Player 2 has WON!")
-elif values[6] == 2 & values[7] == 2 & values[8] == 2:
-    messagebox.showwarning("Game Over", "Player 2 has WON!")
-elif values[0] == 2 & values[3] == 2 & values[6] == 2:
-    messagebox.showwarning("Game Over", "Player 2 has WON!")
-elif values[1] == 2 & values[4] == 2 & values[7] == 2:
-    messagebox.showwarning("Game Over", "Player 2 has WON!")
-elif values[2] == 2 & values[5] == 2 & values[8] == 2:
-    messagebox.showwarning("Game Over", "Player 2 has WON!")
-elif values[6] == 2 & values[4] == 2 & values[2] == 2:
-    messagebox.showwarning("Game Over", "Player 2 has WON!")
-elif values[0] == 2 & values[4] == 2 & values[8] == 2:
-    messagebox.showwarning("Game Over", "Player 2 has WON!")
+print("seb gey")
 
 
     
