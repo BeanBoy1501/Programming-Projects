@@ -3,14 +3,30 @@ from tkinter import messagebox
 import tkinter.font as font
 
 root = Tk()
-root.minsize(370,395)
-root.maxsize(370,395)
+root.title("Player 1's turn")
+root.minsize(500,395)
+root.maxsize(500,395)
 
 btns = []
 values = [0,0,0,0,0,0,0,0,0]
 counter = 0
 player = 1
 draw_if_9 = 1
+
+
+
+#restart function
+def Restart():
+    global draw_if_9, values, player
+    values = [0,0,0,0,0,0,0,0,0]
+    for i in range(0, 9):
+        btns[i].configure(text = "-")
+        draw_if_9 = 1
+        player = 1
+        root.title("Player 1's turn")
+
+
+
 
 #click function, creating x's and o's
 def Click(arg):
@@ -40,7 +56,7 @@ for i in range(0,3):
         btns.append(Button(text = '-', height = 8, width = 16, command = lambda x = counter: Click(x)))
         btns[counter].grid(row = i, column = j)
         counter += 1
-
+restart = Button(root, text = "Restart", height = 8, width = 16, command = Restart).grid(row = 1, column = 3)
 
 
 def GameEndChecker():
