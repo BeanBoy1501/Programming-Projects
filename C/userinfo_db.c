@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-int main(void)
+int main()
 {
     FILE *fpt;
 
@@ -23,11 +23,25 @@ int main(void)
         char *str_input = fgets(content, 64, fpt);
         if (str_input == NULL)
         {
-            fprintf(fpt, "%s", disgusting_setup_sequence);
+            //printing the disgusting_setup_sequence if file is empty
+            for (int i = 0; i < 30; i++)
+            {
+                int value = disgusting_setup_sequence[i];
+                fputc(value, fpt);
+            }
+            printf("empty");
+            break;
         }
+        else
+        {
+            printf("%s", str_input);
+            printf("not empty");
+            break;
+        }
+        
     }
     
 
     fclose(fpt);
-    
+    return 0;
 }
