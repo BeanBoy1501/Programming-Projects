@@ -2,24 +2,62 @@
 #include <stdlib.h>
 
 #define MAX_SIZE 32
+#define pass_setup_size 9  
+#define name_setup_size 5  
+#define surname_setup_size 8  
+#define age_setup_size 4  
+            
+char pass_setup[9] = "password:";
+char name_setup[5] = "name:";
+char surname_setup[8] = "surname:";
+char age_setup[4] = "age:";
+FILE *fpt;
+int temp_size;
+
+int counterFunc(char inputArray[MAX_SIZE])
+{ 
+    int counterFunc = 1;
+    for (int i = 0; i < MAX_SIZE; i++)
+    {
+        if (inputArray[i] == '\n')
+        {
+            break;
+        }
+        else
+        {
+            counterFunc++;
+        }
+    }
+    return counterFunc;
+}
+
+void categorySetup(int sizeOfArray, char setupArray[MAX_SIZE])
+{
+    for (int i = 0; i < sizeOfArray; i++)
+    {
+        int char_ascii = setupArray[i];
+        fputc(char_ascii, fpt);
+    }
+}
+
+void inputPrint(int temp_size, char inputArray[MAX_SIZE])
+{
+    for (int i = 0; i < temp_size; i++)
+    {
+        int char_ascii = inputArray[i];
+        fputc(char_ascii, fpt); 
+    }
+}
 
 
 int main()
 {
-    FILE *fpt;
-
-    char content[128];
     int choice;
     char input[MAX_SIZE];
     char useless[4];
 
     //seb im sorry lol i think this is an okay way of doing it :joy:
     //char disgusting_setup_sequence[30] = "password:\nname:\nsurname:\nage:\n";
-
-    char pass_setup[9] = "password:";
-    char name_setup[5] = "name:";
-    char surname_setup[8] = "surname:";
-    char age_setup[4] = "age:";
     
     fpt = fopen("user_info.txt", "a+");
 
@@ -32,120 +70,53 @@ int main()
         fgets(useless, 4, stdin);
         //
 
-        if (choice == 1)
+        if (choice == 1)               //account login
         {
             printf("you chose 1");
             break;
             //this will come later
         }
-        else if (choice == 2)
+        else if (choice == 2)          //account creation
         {
-            int counter;
-            int temp_size;
+
 
             // ENTERING PASSWORD
+
 
             printf("Enter the password you want to use (max 32 characters) > ");
             fgets(input, MAX_SIZE, stdin);
             
-            //counter determining the size of the string
-            counter = 1;
-            for (int i = 0; i < MAX_SIZE; i++)
-            {
-                if (input[i] == '\n')
-                {
-                    break;
-                }
-                else
-                {
-                    counter++;
-                }
-            }
-            temp_size = counter;
+            temp_size = counterFunc(input);    //counter determining the size of the string                           
 
-            //safe approach of storing shit into file
-            for (int i = 0; i < 9; i++)  // 5 is size of "password:"
-            {
-                int char_ascii = pass_setup[i];
-                fputc(char_ascii, fpt);
-            }
+            categorySetup(pass_setup_size, pass_setup);  //safe approach of storing shit into file
+    
+            inputPrint(temp_size, input); //printing the user input value
 
-            //again, i mean copy pasting code cannot be bad, right? just look at yanderedev's example pogg
-            for (int i = 0; i < temp_size; i++)
-            {
-                int char_ascii = input[i];
-                fputc(char_ascii, fpt);
-             
-            }
 
             //ENTERING NAME 
+
 
             printf("Enter your name (max 32 characters) > ");
             fgets(input, MAX_SIZE, stdin);
 
-            //counter determining the size of the string
-            counter = 1;
-            for (int i = 0; i < MAX_SIZE; i++)
-            {
-                if (input[i] == '\n')
-                {
-                    break;
-                }
-                else
-                {
-                    counter++;
-                }
-            }
-            temp_size = counter;
+            temp_size = counterFunc(input);
 
+            categorySetup(name_setup_size, name_setup);
 
-            for (int i = 0; i < 5; i++)  // 5 is size of "name:"
-            {
-                int char_ascii = name_setup[i];
-                fputc(char_ascii, fpt);
-            }
+            inputPrint(temp_size, input);
 
-            for (int i = 0; i < temp_size; i++)
-            {
-                int char_ascii = input[i];
-                fputc(char_ascii, fpt);
-             
-            }
 
             //ENTERING SURNAME 
+
 
             printf("Enter your surname (max 32 characters) > ");
             fgets(input, MAX_SIZE, stdin);
 
-            //counter determining the size of the string
-            counter = 1;
-            for (int i = 0; i < MAX_SIZE; i++)
-            {
-                if (input[i] == '\n')
-                {
-                    int b = 5 + 5;
-                    break;
-                }
-                else
-                {
-                    counter++;
-                }
-            }
-            temp_size = counter;
+            temp_size = counterFunc(input);
 
+            categorySetup(surname_setup_size, surname_setup);
 
-            for (int i = 0; i < 8; i++)  // 8 is size of "surname:"
-            {
-                int char_ascii = surname_setup[i];
-                fputc(char_ascii, fpt);
-            }
-
-            for (int i = 0; i < temp_size; i++)
-            {
-                int char_ascii = input[i];
-                fputc(char_ascii, fpt);
-             
-            }
+            inputPrint(temp_size, input);
             
 
             //ENTERING AGE 
@@ -153,35 +124,11 @@ int main()
             printf("Enter your age (max 3 integers) > ");
             fgets(input, MAX_SIZE, stdin);
 
-            //counter determining the size of the string
-            counter = 1;   //for some reason counter here needs to be 0 instead of 1 to work
-            for (int i = 0; i < MAX_SIZE; i++)
-            {
-                if (input[i] == '\n')  //weird interaction, must investigate further
-                {
-                    int a = 5 + 6;
-                    break;
-                }
-                else
-                {
-                    counter++;
-                }
-            }
-            temp_size = counter;
+            temp_size = counterFunc(input);
 
+            categorySetup(age_setup_size, age_setup);
 
-            for (int i = 0; i < 4; i++)  // 4 is size of "age:"
-            {
-                int char_ascii = age_setup[i];
-                fputc(char_ascii, fpt);
-            }
-
-            for (int i = 0; i < temp_size; i++)
-            {
-                int char_ascii = input[i];
-                fputc(char_ascii, fpt);
-             
-            }
+            inputPrint(temp_size, input);
             break;
         }
         else
@@ -192,15 +139,6 @@ int main()
 
         
     }
-    
-    // while (1)
-    // {
-    //     char *str_input = fgets(content, 64, fpt);
-    //     if (str_input == NULL)
-    //     {
-            
-    //     }
-    // }
 
     fclose(fpt);
     return 0;
