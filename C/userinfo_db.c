@@ -123,6 +123,7 @@ int main()
             {
                 if (input[i] == '\n')
                 {
+                    int b = 5 + 5;
                     break;
                 }
                 else
@@ -150,14 +151,15 @@ int main()
             //ENTERING AGE 
 
             printf("Enter your age (max 3 integers) > ");
-            fgets(input, 3, stdin);
+            fgets(input, MAX_SIZE, stdin);
 
             //counter determining the size of the string
-            counter = 0;   //for some reason counter here needs to be 0 to work
+            counter = 1;   //for some reason counter here needs to be 0 instead of 1 to work
             for (int i = 0; i < MAX_SIZE; i++)
             {
-                if (input[i] == '\n' || input[i] == '\0')  //weird interaction, must investigate further
+                if (input[i] == '\n')  //weird interaction, must investigate further
                 {
+                    int a = 5 + 6;
                     break;
                 }
                 else
