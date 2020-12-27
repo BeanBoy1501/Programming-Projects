@@ -14,6 +14,8 @@ char age_setup[4] = "age:";
 FILE *fpt;
 int temp_size;
 
+int sizeOfFILE = 0;  //the important one for password checking
+
 int counterFunc(char inputArray[MAX_SIZE])
 { 
     int counterFunc = 1;
@@ -53,11 +55,12 @@ void inputPrint(int temp_size, char inputArray[MAX_SIZE])
 int main()
 {
     int choice;
+    char *ifEmpty;
     char input[MAX_SIZE];
     char useless[4];
+    char temp_passInput[MAX_SIZE];
 
     //seb im sorry lol i think this is an okay way of doing it :joy:
-    //char disgusting_setup_sequence[30] = "password:\nname:\nsurname:\nage:\n";
     
     fpt = fopen("user_info.txt", "a+");
 
@@ -72,13 +75,44 @@ int main()
 
         if (choice == 1)               //account login
         {
-            printf("you chose 1");
+            char *s = fgets(useless, 4, fpt);
+            if (s == NULL)
+            {
+                printf("There are no accounts registered, creating a new account now.\n");
+                goto characterCreation;  //you'll like this one seb
+            }
+            else
+            {
+                printf("Enter your password > ");
+                fgets(temp_passInput, MAX_SIZE, fpt);  //user inputing password which will go through check
+                int temp_passSize = counterFunc(temp_passInput);  //getting the size of the password
+                
+                //creating the right sized array for the user inputted password
+                char pass_for_check[temp_passSize];
+                for (int i = 0; i < temp_passSize; i++)
+                {
+                    pass_for_check[i] = temp_passInput[i];
+                }
+
+                for (int i = 0; i < sizeOfFILE; i++)
+                {
+
+                    if (feof(fpt))
+                    {
+                        break;
+                    }
+
+                    
+                }
+
+            }
+            
+            
             break;
-            //this will come later
         }
         else if (choice == 2)          //account creation
         {
-
+            characterCreation:
 
             // ENTERING PASSWORD
 
@@ -129,7 +163,9 @@ int main()
             categorySetup(age_setup_size, age_setup);
 
             inputPrint(temp_size, input);
-            break;
+            
+            //listen, i know what this looks like and i am not ashamed
+            sizeOfFILE += MAX_SIZE*4 + pass_setup_size + name_setup_size + surname_setup_size + age_setup_size;
         }
         else
         {
