@@ -1,25 +1,26 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#define MAX_SIZE 32
+#define max_size 32
 #define pass_setup_size 9  
 #define name_setup_size 5  
 #define surname_setup_size 8  
 #define age_setup_size 4  
             
-char pass_setup[9] = "password:";
-char name_setup[5] = "name:";
-char surname_setup[8] = "surname:";
-char age_setup[4] = "age:";
+const char pass_setup[9] = "password:";
+const char name_setup[5] = "name:";
+const char surname_setup[8] = "surname:";
+const char age_setup[4] = "age:";
 FILE *fpt;
 int temp_size;
+int flag = 0;
 
 int sizeOfFILE = 0;  //the important one for password checking
 
-int counterFunc(char inputArray[MAX_SIZE])
+int counterFunc(char inputArray[max_size])
 { 
     int counterFunc = 1;
-    for (int i = 0; i < MAX_SIZE; i++)
+    for (int i = 0; i < max_size; i++)
     {
         if (inputArray[i] == '\n')
         {
@@ -29,11 +30,17 @@ int counterFunc(char inputArray[MAX_SIZE])
         {
             counterFunc++;
         }
+        if (!((inputArray[i] >= 65 && inputArray[i] <= 90) || (inputArray[i] >= 97 && inputArray[i] <= 122)))
+        {
+            flag = 1;
+        }
+        
+
     }
     return counterFunc;
 }
 
-void categorySetup(int sizeOfArray, char setupArray[MAX_SIZE])
+void categorySetup(int sizeOfArray, const char setupArray[max_size])
 {
     for (int i = 0; i < sizeOfArray; i++)
     {
@@ -42,7 +49,7 @@ void categorySetup(int sizeOfArray, char setupArray[MAX_SIZE])
     }
 }
 
-void inputPrint(int temp_size, char inputArray[MAX_SIZE])
+void inputPrint(int temp_size, char inputArray[max_size])
 {
     for (int i = 0; i < temp_size; i++)
     {
@@ -56,9 +63,9 @@ int main()
 {
     int choice;
     char *ifEmpty;
-    char input[MAX_SIZE];
+    char input[max_size];
     char useless[4];
-    char temp_passInput[MAX_SIZE];
+    char temp_passInput[max_size];
 
     //seb im sorry lol i think this is an okay way of doing it :joy:
     
@@ -84,7 +91,7 @@ int main()
             else
             {
                 printf("Enter your password > ");
-                fgets(temp_passInput, MAX_SIZE, fpt);  //user inputing password which will go through check
+                fgets(temp_passInput, max_size, fpt);  //user inputing password which will go through check
                 int temp_passSize = counterFunc(temp_passInput);  //getting the size of the password
                 
                 //creating the right sized array for the user inputted password
@@ -106,8 +113,7 @@ int main()
                 }
 
             }
-            
-            
+                
             break;
         }
         else if (choice == 2)          //account creation
@@ -118,7 +124,7 @@ int main()
 
 
             printf("Enter the password you want to use (max 32 characters) > ");
-            fgets(input, MAX_SIZE, stdin);
+            fgets(input, max_size, stdin);
             
             temp_size = counterFunc(input);    //counter determining the size of the string                           
 
@@ -129,11 +135,12 @@ int main()
 
             //ENTERING NAME 
 
-
             printf("Enter your name (max 32 characters) > ");
-            fgets(input, MAX_SIZE, stdin);
-
-            temp_size = counterFunc(input);
+            while (flag == 0)
+            {
+                fgets(input, max_size, stdin);
+                temp_size = counterFunc(input);
+            }
 
             categorySetup(name_setup_size, name_setup);
 
@@ -144,7 +151,7 @@ int main()
 
 
             printf("Enter your surname (max 32 characters) > ");
-            fgets(input, MAX_SIZE, stdin);
+            fgets(input, max_size, stdin);
 
             temp_size = counterFunc(input);
 
@@ -155,8 +162,9 @@ int main()
 
             //ENTERING AGE 
 
+
             printf("Enter your age (max 3 integers) > ");
-            fgets(input, MAX_SIZE, stdin);
+            fgets(input, max_size, stdin);
 
             temp_size = counterFunc(input);
 
@@ -165,7 +173,7 @@ int main()
             inputPrint(temp_size, input);
             
             //listen, i know what this looks like and i am not ashamed
-            sizeOfFILE += MAX_SIZE*4 + pass_setup_size + name_setup_size + surname_setup_size + age_setup_size;
+            sizeOfFILE += max_size*4 + pass_setup_size + name_setup_size + surname_setup_size + age_setup_size;
         }
         else
         {
