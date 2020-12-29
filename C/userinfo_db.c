@@ -91,6 +91,7 @@ int main()
     char input[max_size];
     char useless[4];
     char temp_passInput[max_size];
+    int passIncorrect = 0;
 
     //seb im sorry lol i think this is an okay way of doing it :joy:
 
@@ -138,6 +139,7 @@ int main()
                 {
                     if (feof(fpt))
                     {
+                        printf("No account with this password found.");
                         break;
                     }
                     else
@@ -162,16 +164,15 @@ int main()
                                         counter = 0;
                                         correctPassCounter = 0;
                                         printf("WRONG");
+                                        passIncorrect = 1;
                                         break;
-                                    }
-                                    else
-                                    {
-                                        pass_is_correct = 1;
-                                        break;
-                                    }
+                                    } 
+                                } 
+                                if (passIncorrect == 0)
+                                {
+                                    printf("You have entered the correct password!");
+                                }
                                     
-                                      
-                                }     
                             }
                         }   
                         if (ignore == 0)
@@ -209,27 +210,59 @@ int main()
                             } 
                         } 
                     }
+                    if (pass_is_correct == 1)
+                    {
+                        break;
+                    }
                 }
                 if (pass_is_correct == 1)
                 {
-                    printf("You have entered the correct password!");
+                    int isPrinted = 0;
+                    counter = 0;
+                    while (1)
+                    {
+                        if (feof(fpt))
+                        {
+                            break;
+                        }
+                        else
+                        {
+                            //printing out the name
+                            while (isPrinted == 0)
+                            {
+                                c = fgetc(fpt);
+                                switch (c)
+                                {
+                                case 110:
+                                    counter++;
+                                    break;
+                                case 97:
+                                    counter++;
+                                    break;
+                                case 109:
+                                    counter++;
+                                    break;
+                                case 101:
+                                    counter++;
+                                    break;
+                                case 58:
+                                    counter++;
+                                    break;
+                                default:
+                                    counter = 0;
+                                    break;
+                            }
+                            
+                            }
+                        }
+                        
+                        
+                    }
+                    
                 }
-                // for (int i = 0; i < sizeOfFILE; i++)
-                // {
-                //     if (feof(fpt))
-                //     {
-                //         break;
-                //     }
-                //     else
-                //     {
-                //         fileContents[i] = fgetc(fpt);
-                //         printf("%c", fileContents);
-                //     }
-                // }
-
+                
             }
 
-            break;
         }
         else if (choice == 2)          //account creation
         {
