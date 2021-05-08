@@ -3,84 +3,112 @@ import time
 import os
 import keyboard
 import sys
-
+import msvcrt
 
 f = open("C:\\Users\\jbock\\Desktop\\portfolio\\db.txt", "r+")
+
+def flush():
+    while msvcrt.kbhit():  
+        msvcrt.getch()     
+
+def amountBeforeDigit(number):
+    numString = str(number)
+    counter = 0
+    for n in numString:
+        if (n == '.'):
+            break
+        counter += 1
+    return counter
 
 
 def updateCoinInfo(coinInput, coinAmountAdded):
     coinMatch = False
-    f.seek(0)
     coin = ""
-    while True: 
+    counter = 0
+    f.seek(0)
+    while True:
         char = f.read(1)
         if (char == ';'):
             if (coin == coinInput):
                 coinMatch = True
                 break
-            else:
-                char = ""
-                f.readline(1)
-        else:
+            counter += 1
+        
+        if (counter == 2):
+            counter = 0
+            coin = ""
+
+        elif (counter == 0):
             coin += char
 
     if (coinMatch):
-        counter = 0
-        total = ""
         currentPos = f.tell()
+        amount = ""
         while True:
             char = f.read(1)
-            if (char == '\n' or char == ''):
+            if (char == ';'):
                 break
-            else:
-                total += char
-                counter += 1
+            amount += char
         
-        result = int(total) + int(coinAmountAdded)
+        resultingAmount = float(amount) + float(coinAmountAdded)
+        resultingAmount = round(resultingAmount, 14 - amountBeforeDigit(resultingAmount))
         f.seek(currentPos)
-        f.write(str(result))
+        f.write(str(resultingAmount))
+        
 
-           
-def allCoinInfo():
+
+
+
+def getCoinInfo():
+    counter = 0
     coin = ""
     amount = ""
-    coinDone = False
-    coinsDict = {}
+    coins = {}
+    skipRead = False
     f.seek(0)
     while True:
-        char = f.read(1)
+        if (not skipRead):
+            char = f.read(1)
         if (char == ''):
-            coinsDict[coin] = amount
             break
-        elif (char == '\n'):
-            coinsDict[coin] = amount
-            coinDone = False
+        elif (counter == 2):
+            coins[coin] = amount
             coin = ""
-            amount = "" 
-        elif (coinDone != True):
-            if (char != ';'):
-                coin += char
-            else:
-                coinDone = True
-                continue
-        
-        if (coinDone == True):
+            amount = ""
+            counter = 0
+            skipRead = False
+        elif (char == ';'):
+            counter += 1
+            if (counter == 2):
+                skipRead = True
+        elif (counter == 0):
+            coin += char
+        elif (counter == 1):
             amount += char
-    
-    return coinsDict
+        
+
+    return coins
 
 
 def printCoinInfo():
-    allCoins = allCoinInfo()
+    allCoins = getCoinInfo()
+    sumOfAll = 0
     for coin in allCoins:
-        print("%s: %s" % (coin, allCoins[coin]))
+        coinUnitPriceEUR = cryptocompare.get_price(coin, "EUR")[coin]["EUR"]
+        myCoinAmountPrice = float(coinUnitPriceEUR) * float(allCoins[coin])
+        sumOfAll += float(myCoinAmountPrice)
+        print("%s: %s ---> %s € ---> %s HRK " % (coin, allCoins[coin], myCoinAmountPrice, myCoinAmountPrice * 7.53))
+    
+    print("\nSum of all coins: %s € ---> %s HRK" % (sumOfAll, sumOfAll * 7.53))
+
+    print("\nNOTE: The prices are not 100% correct, this is a really close estimate!")
 
 
 def mandatoryPrint():
     print("---------------------------------")
-    print("Press q to quit")
     print("Press a for adding more money")
-    print("Pres i for getting all coin info")
+    print("Pres c for getting all coin info")
+    print("Press q to quit")
     print("---------------------------------")
     print("")
 
@@ -90,23 +118,69 @@ while True:
     counter = 0
     if (not flag):
         os.system("cls")
+        mandatoryPrint()
         flag = True
     elif (keyboard.is_pressed('q')):
         print("")
         print("Quitting...")
+        flush()
         break
 
-    elif (keyboard.is_pressed('i')):
+    elif (keyboard.is_pressed('c')):
         os.system("cls")
         mandatoryPrint()
         printCoinInfo()
 
     elif (keyboard.is_pressed('a')):
         os.system("cls")
+        mandatoryPrint()
         print("For which coin do you want to update info")
         print("Press the corresponding number")
-        for coin in allCoinInfo():
+        for coin in getCoinInfo():
             counter += 1
             print("%s -> %s " % (counter, coin))
+        
+        while True:
+            if (keyboard.is_pressed('1')):
+                os.system("cls")
+                mandatoryPrint()
+                flush()
+                moneyInput = input("Enter the amount of money you want to add > ")
+                updateCoinInfo("ETH", float(moneyInput))
+                flag = False
+                break
+
+            elif (keyboard.is_pressed('2')):
+                os.system("cls")
+                mandatoryPrint()
+                flush()
+                moneyInput = input("Enter the amount of money you want to add > ")
+                updateCoinInfo("BTC", float(moneyInput))
+                flag = False
+                break
+
+            elif (keyboard.is_pressed('3')):
+                os.system("cls")
+                mandatoryPrint()
+                flush()
+                moneyInput = input("Enter the amount of money you want to add > ")
+                updateCoinInfo("DOGE", float(moneyInput))
+                flag = False
+                break
+
+            elif (keyboard.is_pressed('4')):
+                os.system("cls")
+                mandatoryPrint()
+                flush()
+                moneyInput = input("Enter the amount of money you want to add > ")
+                updateCoinInfo("BNB", float(moneyInput))
+                flag = False
+                break
+
+            elif (keyboard.is_pressed('q')):
+                print("")
+                print("Quitting...")
+                flush()
+                exit()
 
 f.close()
