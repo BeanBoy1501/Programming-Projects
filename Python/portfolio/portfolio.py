@@ -139,44 +139,107 @@ while True:
         for coin in getCoinInfo():
             counter += 1
             print("%s -> %s " % (counter, coin))
+
+        print("\nPress b if you wish to cancel")
         
         while True:
             if (keyboard.is_pressed('1')):
-                os.system("cls")
-                mandatoryPrint()
-                flush()
-                moneyInput = input("Enter the amount of money you want to add > ")
+                wrongInput = False
+                while True:
+                    if (wrongInput):
+                        os.system("cls")
+                        mandatoryPrint()
+                        flush()
+                        print("You entered too big of a number, try again!")
+                        moneyInput = input("Enter the amount of money you want to add > ")
+                    else:
+                        os.system("cls")
+                        mandatoryPrint()
+                        flush()
+                        print("Enter the amount of money you want to add")
+                        moneyInput = input("The number can be 10 digits max! > ")
+                    if (len(moneyInput) <= 10):
+                        break
+                    else:
+                        wrongInput = True
                 updateCoinInfo("ETH", float(moneyInput))
                 flag = False
                 break
 
             elif (keyboard.is_pressed('2')):
-                os.system("cls")
-                mandatoryPrint()
-                flush()
-                moneyInput = input("Enter the amount of money you want to add > ")
+                wrongInput = False
+                while True:
+                    if (wrongInput):
+                        os.system("cls")
+                        mandatoryPrint()
+                        flush()
+                        print("You entered too big of a number, try again!")
+                        moneyInput = input("Enter the amount of money you want to add > ")
+                    else:
+                        os.system("cls")
+                        mandatoryPrint()
+                        flush()
+                        print("Enter the amount of money you want to add")
+                        moneyInput = input("The number can be 10 digits max! > ")
+                    if (len(moneyInput) <= 10):
+                        break
+                    else:
+                        wrongInput = True
                 updateCoinInfo("BTC", float(moneyInput))
                 flag = False
                 break
 
             elif (keyboard.is_pressed('3')):
-                os.system("cls")
-                mandatoryPrint()
-                flush()
-                moneyInput = input("Enter the amount of money you want to add > ")
+                wrongInput = False
+                while True:
+                    if (wrongInput):
+                        os.system("cls")
+                        mandatoryPrint()
+                        flush()
+                        print("You entered too big of a number, try again!")
+                        moneyInput = input("Enter the amount of money you want to add > ")
+                    else:
+                        os.system("cls")
+                        mandatoryPrint()
+                        flush()
+                        print("Enter the amount of money you want to add")
+                        moneyInput = input("The number can be 10 digits max! > ")
+                    if (len(moneyInput) <= 10):
+                        break
+                    else:
+                        wrongInput = True
                 updateCoinInfo("DOGE", float(moneyInput))
                 flag = False
                 break
 
             elif (keyboard.is_pressed('4')):
-                os.system("cls")
-                mandatoryPrint()
-                flush()
-                moneyInput = input("Enter the amount of money you want to add > ")
+                wrongInput = False
+                while True:
+                    if (wrongInput):
+                        os.system("cls")
+                        mandatoryPrint()
+                        flush()
+                        print("You entered too big of a number, try again!")
+                        moneyInput = input("Enter the amount of money you want to add > ")
+                    else:
+                        os.system("cls")
+                        mandatoryPrint()
+                        flush()
+                        print("Enter the amount of money you want to add")
+                        moneyInput = input("The number can be 10 digits max! > ")
+                    if (len(moneyInput) <= 10):
+                        break
+                    else:
+                        wrongInput = True
                 updateCoinInfo("BNB", float(moneyInput))
                 flag = False
                 break
 
+            elif (keyboard.is_pressed('b')):
+                os.system("cls")
+                mandatoryPrint()
+                break
+            
             elif (keyboard.is_pressed('q')):
                 print("")
                 print("Quitting...")
