@@ -118,7 +118,7 @@ def printCoinInfo():
 
 def mandatoryPrint():
     print("---------------------------------")
-    print("Press a for adding more money")
+    print("Press a for adding more money/coins")
     print("Pres c for getting all coin info")
     print("Press q to quit")
     print("---------------------------------")
