@@ -3,13 +3,23 @@ import time
 import os
 import keyboard
 import sys
-import msvcrt
+import platform
 
-f = open("C:\\Users\\jbock\\Desktop\\portfolio\\db.txt", "r+")
+plt = platform.system()
 
-def flush():
-    while msvcrt.kbhit():  
-        msvcrt.getch()     
+f = open("db.txt", "r+")
+
+if (plt == "Windows"):
+    import msvcrt
+    def flush():
+        while msvcrt.kbhit():  
+            msvcrt.getch() 
+
+elif (plt == "Linux"):
+    def flush():
+        sys.stdout.flush()
+        sys.stdin.flush()
+
 
 def amountBeforeDigit(number):
     numString = str(number)
@@ -102,6 +112,8 @@ def printCoinInfo():
     print("\nSum of all coins: %s € ---> %s HRK" % (sumOfAll, sumOfAll * 7.53))
 
     print("\nNOTE: The prices are not 100% correct, this is a really close estimate!")
+
+    print("\nTHIS IS NOT COUNTING SHITCOINS -> $SHIB AND $ASS")
 
 
 def mandatoryPrint():
