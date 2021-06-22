@@ -1,9 +1,13 @@
+#!/usr/bin/env
+# -*- coding: UTF-8 -*-
+
 import cryptocompare
 import time
 import os
 import keyboard
 import sys
 import platform
+from termios import tcflush, TCIFLUSH
 
 plt = platform.system()
 
@@ -15,10 +19,18 @@ if (plt == "Windows"):
         while msvcrt.kbhit():  
             msvcrt.getch() 
 
+    def clearScreen():
+        os.system("cls")
+
 elif (plt == "Linux"):
     def flush():
         sys.stdout.flush()
         sys.stdin.flush()
+        tcflush(sys.stdin, TCIFLUSH)
+
+    def clearScreen():
+        os.system("cls")
+        
 
 
 def amountBeforeDigit(number):
@@ -129,7 +141,7 @@ flag = False
 while True:
     counter = 0
     if (not flag):
-        os.system("cls")
+        clearScreen()
         mandatoryPrint()
         flag = True
     elif (keyboard.is_pressed('q')):
@@ -139,12 +151,12 @@ while True:
         break
 
     elif (keyboard.is_pressed('c')):
-        os.system("cls")
+        clearScreen()
         mandatoryPrint()
         printCoinInfo()
 
     elif (keyboard.is_pressed('a')):
-        os.system("cls")
+        clearScreen()
         mandatoryPrint()
         print("For which coin do you want to update info")
         print("Press the corresponding number")
@@ -159,13 +171,15 @@ while True:
                 wrongInput = False
                 while True:
                     if (wrongInput):
-                        os.system("cls")
+                        clearScreen()
+            
                         mandatoryPrint()
                         flush()
                         print("You entered too big of a number, try again!")
                         moneyInput = input("Enter the amount of money you want to add > ")
                     else:
-                        os.system("cls")
+                        clearScreen()
+            
                         mandatoryPrint()
                         flush()
                         print("Enter the amount of money you want to add")
@@ -182,13 +196,15 @@ while True:
                 wrongInput = False
                 while True:
                     if (wrongInput):
-                        os.system("cls")
+                        clearScreen()
+            
                         mandatoryPrint()
                         flush()
                         print("You entered too big of a number, try again!")
                         moneyInput = input("Enter the amount of money you want to add > ")
                     else:
-                        os.system("cls")
+                        clearScreen()
+            
                         mandatoryPrint()
                         flush()
                         print("Enter the amount of money you want to add")
@@ -205,13 +221,15 @@ while True:
                 wrongInput = False
                 while True:
                     if (wrongInput):
-                        os.system("cls")
+                        clearScreen()
+            
                         mandatoryPrint()
                         flush()
                         print("You entered too big of a number, try again!")
                         moneyInput = input("Enter the amount of money you want to add > ")
                     else:
-                        os.system("cls")
+                        clearScreen()
+            
                         mandatoryPrint()
                         flush()
                         print("Enter the amount of money you want to add")
@@ -228,13 +246,15 @@ while True:
                 wrongInput = False
                 while True:
                     if (wrongInput):
-                        os.system("cls")
+                        clearScreen()
+            
                         mandatoryPrint()
                         flush()
                         print("You entered too big of a number, try again!")
                         moneyInput = input("Enter the amount of money you want to add > ")
                     else:
-                        os.system("cls")
+                        clearScreen()
+            
                         mandatoryPrint()
                         flush()
                         print("Enter the amount of money you want to add")
@@ -248,7 +268,8 @@ while True:
                 break
 
             elif (keyboard.is_pressed('b')):
-                os.system("cls")
+                clearScreen()
+    
                 mandatoryPrint()
                 break
             
