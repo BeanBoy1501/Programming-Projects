@@ -54,9 +54,6 @@ def addRemainingDigits(number):
         for x in range(0, 15 - size - 1):
             numString += "0"
     return numString
-        
-
-
 
 
 
@@ -94,7 +91,29 @@ def updateCoinInfo(coinInput, coinAmountAdded):
         f.seek(currentPos)
         f.write(str(resultingAmount))
         
+def removeCoin(coin, f):
+    wholeDB = f.readline()
+    
+    f.close()
 
+    f = open("db.txt", "w")
+    
+    dbList = wholeDB.split(";")
+    index = dbList.index(coin)
+    del dbList[len(dbList) - 1]
+    #dbList.remove(index)
+    del dbList[index + 1]
+    #dbList.remove(index + 1)
+    del dbList[index]
+
+    finalString = ""
+    for x in dbList:
+        finalString += x
+        finalString += ";"
+
+
+    f.writelines(finalString)
+    f.close()
 
 
 
@@ -148,6 +167,7 @@ def printCoinInfo():
 def mandatoryPrint():
     print("---------------------------------")
     print("Press a for adding more money/coins")
+    print("Press r for removing a coin")
     print("Pres c for getting all coin info")
     print("Press q to quit")
     print("---------------------------------")
@@ -186,6 +206,18 @@ while True:
         mandatoryPrint()
         printCoinInfo()
 
+    elif (keyboard.is_pressed('r')):
+        clearScreen()
+        mandatoryPrint()
+        flush()
+        print("Enter the coin which you want to remove")
+        coinInput = input("Enter 3/4 characters > ")
+        removeCoin(coinInput, f)
+        f = open("db.txt", "r+")
+
+        print("\n Removed {}".format(coinInput))
+        
+
     elif (keyboard.is_pressed('a')):
         clearScreen()
         mandatoryPrint()
@@ -196,8 +228,8 @@ while True:
             print("%s -> %s " % (counter, coin))
 
         print("\nPress a if you wish to add a new coin")
-        print("Press b if you wish to cancel")
-        
+        print("Press b if you wish to cancel")   
+
         while True:
             flush()
             x = keyboard.read_key() #needed to absorb the previous keypress of the letter a
@@ -234,11 +266,21 @@ while True:
                     addNewCoin(f)
 
                     f = open("db.txt", "r+")
-                    
+
                     clearScreen()
                     mandatoryPrint()
                     printCoinInfo()
 
                     break
+
+                elif (readKey == "b"):
+                    clearScreen()
+                    mandatoryPrint()
+
+                elif (readKey == "q"):
+                    flush()
+                    break
+
+
 
 f.close()
