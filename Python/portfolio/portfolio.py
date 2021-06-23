@@ -43,6 +43,22 @@ def amountBeforeDigit(number):
         counter += 1
     return counter
 
+def addRemainingDigits(number):
+    numString = str(number)
+    size = len(numString)
+    if ("." in numString):
+        for x in range(0, 15 - size):
+            numString += "0"
+    else:
+        numString += "."
+        for x in range(0, 15 - size - 1):
+            numString += "0"
+    return numString
+        
+
+
+
+
 
 def updateCoinInfo(coinInput, coinAmountAdded):
     coinMatch = False
@@ -142,13 +158,13 @@ def addNewCoin(f):
     print("\nEnter abbreviated coin name (3/4 letters)")
     coinName = input("> ")
     print("Enter the coin amount you want to add")
-    coinAmount = input("The number can be 10 characters max! > ")
+    coinAmount = input("The number can be 15 characters max! > ")
     
     f.close()
     f = open("db.txt", "a")
     f.write(coinName)
     f.write(";")
-    f.write(coinAmount)
+    f.write(addRemainingDigits(coinAmount))
     f.write(";")
     f.close()
 
@@ -204,8 +220,8 @@ while True:
                             mandatoryPrint()
                             flush()
                             print("Enter the coin amount you want to add")
-                            moneyInput = input("The number can be 10 characters max! > ")
-                        if (len(moneyInput) <= 10):
+                            moneyInput = input("The number can be 15 characters max! > ")
+                        if (len(moneyInput) <= 15):
                             break
                         else:
                             wrongInput = True
@@ -216,7 +232,13 @@ while True:
             elif (isinstance(readKey, str)):
                 if (readKey == "a"):
                     addNewCoin(f)
+
                     f = open("db.txt", "r+")
+                    
+                    clearScreen()
+                    mandatoryPrint()
+                    printCoinInfo()
+
                     break
 
 f.close()
