@@ -8,7 +8,6 @@ import keyboard
 import sys
 import io
 import platform
-from termios import tcflush, TCIFLUSH
 
 plt = platform.system()
 
@@ -25,6 +24,7 @@ if (plt == "Windows"):
 
 elif (plt == "Linux"):
     def flush():
+        from termios import tcflush, TCIFLUSH
         sys.stdout.flush()
         sys.stdin.flush()
         tcflush(sys.stdin, TCIFLUSH)
@@ -32,6 +32,13 @@ elif (plt == "Linux"):
     def clearScreen():
         os.system("clear")
         
+
+def is_number(s):
+    try:
+        float(s)
+        return True
+    except ValueError:
+        return False
 
 
 def amountBeforeDigit(number):
@@ -92,7 +99,8 @@ def updateCoinInfo(coinInput, coinAmountAdded):
         f.write(str(resultingAmount))
         
 def removeCoin(coin, f):
-    wholeDB = f.readline()
+    f.seek(0)
+    wholeDB = f.read()
     
     f.close()
 
@@ -101,9 +109,9 @@ def removeCoin(coin, f):
     dbList = wholeDB.split(";")
     index = dbList.index(coin)
     del dbList[len(dbList) - 1]
-    #dbList.remove(index)
+
     del dbList[index + 1]
-    #dbList.remove(index + 1)
+
     del dbList[index]
 
     finalString = ""
@@ -166,7 +174,7 @@ def printCoinInfo():
 
 def mandatoryPrint():
     print("---------------------------------")
-    print("Press a for adding more money/coins")
+    print("Press m for modifying money/coins")
     print("Press r for removing a coin")
     print("Pres c for getting all coin info")
     print("Press q to quit")
@@ -175,18 +183,46 @@ def mandatoryPrint():
 
 def addNewCoin(f):
     flush()
-    print("\nEnter abbreviated coin name (3/4 letters)")
-    coinName = input("> ")
-    print("Enter the coin amount you want to add")
-    coinAmount = input("The number can be 15 characters max! > ")
+    clearScreen()
     
-    f.close()
-    f = open("db.txt", "a")
-    f.write(coinName)
-    f.write(";")
-    f.write(addRemainingDigits(coinAmount))
-    f.write(";")
-    f.close()
+    while True:
+        print("If you wish to quit, type 'quit'.")
+        print("\nEnter abbreviated coin name (3~5 letters)")
+        coinName = input("> ")
+
+        if (coinName in getCoinInfo()):
+            clearScreen()
+            print("You already have this coin in your portfolio.\n")
+        elif (coinName in list(cryptocompare.get_coin_list(True))):
+            break
+        elif (coinName == "quit"):
+            break
+        else:
+            clearScreen()
+            print("This coin isn't in the cryptocompare coin list, try again.\n")
+
+    if (coinName != "quit"):
+        while True:
+            clearScreen()
+            print("If you wish to quit, type 'quit'.\n")
+            print("Enter the coin amount you want to add\n")
+            coinAmount = input("The number can be 15 characters max! > ")
+            if (len(coinAmount) <= 15 & is_number(coinAmount)):
+                break
+            elif (coinAmount == "quit"):
+                break
+            else:
+                clearScreen()
+                print("Wrong input, try again.\n")
+        
+        if (coinAmount != "quit"):
+            f.close()
+            f = open("db.txt", "a")
+            f.write(coinName)
+            f.write(";")
+            f.write(addRemainingDigits(coinAmount))
+            f.write(";")
+            f.close()
 
 flag = False
 while True:
@@ -208,19 +244,38 @@ while True:
 
     elif (keyboard.is_pressed('r')):
         clearScreen()
-        mandatoryPrint()
         flush()
+        print("If you wish to cancel, type quit\n")
         print("Enter the coin which you want to remove")
-        coinInput = input("Enter 3/4 characters > ")
-        removeCoin(coinInput, f)
-        f = open("db.txt", "r+")
 
-        print("\n Removed {}".format(coinInput))
+        quitRemove = False
+        while True:
+            coinInput = input("Enter 3/4 characters > ")
+            if (coinInput in getCoinInfo()):
+                break
+            elif (coinInput == "quit"):
+                quitRemove = True
+                break
+            else:
+                print("\nThis coin isn't in your portfolio, try again.")
+
+        if (not quitRemove):
+            removeCoin(coinInput, f)
+            f = open("db.txt", "r+")
+
+            clearScreen()
+            mandatoryPrint()
+            print("\nRemoved {}".format(coinInput))
+            
+        
+        else:
+            clearScreen()
+            mandatoryPrint()
+
         
 
-    elif (keyboard.is_pressed('a')):
+    elif (keyboard.is_pressed('m')):
         clearScreen()
-        mandatoryPrint()
         print("For which coin do you want to update info")
         print("Press the corresponding number")
         for coin in getCoinInfo():
@@ -234,8 +289,27 @@ while True:
             flush()
             x = keyboard.read_key() #needed to absorb the previous keypress of the letter a
             readKey = keyboard.read_key()
+                
+            if (readKey == "a"):
+                flush()
+                addNewCoin(f)
 
-            if (isinstance(readKey, int)):
+                f = open("db.txt", "r+")
+
+                clearScreen()
+                mandatoryPrint()
+                break
+
+            elif (readKey == "b"):
+                clearScreen()
+                mandatoryPrint()
+                break
+
+            elif (readKey == "q"):
+                flush()
+                break
+
+            elif (int(readKey) >= 0):
                 if (int(readKey) <= len(getCoinInfo())):
                     wrongInput = False
                     while True:
@@ -244,42 +318,35 @@ while True:
                 
                             mandatoryPrint()
                             flush()
-                            print("You entered too big of a number, try again!")
-                            moneyInput = input("Enter the coin amount you want to add > ")
+                            print("Wrong input, try again!\n")
+                            print("If you wish to cancel, type 'quit'.\n")
+                            print("Enter the coin amount you want to add, if you want to subtract put a minus before the amount")
+                            moneyInput = input("The number can be 15 characters max! > ")
                         else:
                             clearScreen()
-                
                             mandatoryPrint()
                             flush()
-                            print("Enter the coin amount you want to add")
+                            print("If you wish to cancel, type quit\n")
+                            print("Enter the coin amount you want to add, if you want to subtract put a minus before the amount")
                             moneyInput = input("The number can be 15 characters max! > ")
-                        if (len(moneyInput) <= 15):
+                        if (len(moneyInput) <= 15 & is_number(moneyInput)):
+                            break
+                        elif (moneyInput == "quit"):
                             break
                         else:
                             wrongInput = True
                     
-                    updateCoinInfo(list(getCoinInfo())[int(readKey) - 1], float(moneyInput))
-                    flag = False
-                    break
-            elif (isinstance(readKey, str)):
-                if (readKey == "a"):
-                    addNewCoin(f)
+                    if (moneyInput == "quit"):
+                        clearScreen()
+                        mandatoryPrint()
+                        flush()
+                        break
 
-                    f = open("db.txt", "r+")
-
-                    clearScreen()
-                    mandatoryPrint()
-                    printCoinInfo()
-
-                    break
-
-                elif (readKey == "b"):
-                    clearScreen()
-                    mandatoryPrint()
-
-                elif (readKey == "q"):
-                    flush()
-                    break
+                    else:
+                        updateCoinInfo(list(getCoinInfo())[int(readKey) - 1], float(moneyInput))
+                        flag = False
+                        break
+            
 
 
 
