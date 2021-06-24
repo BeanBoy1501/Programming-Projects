@@ -188,6 +188,7 @@ def addNewCoin(f):
     while True:
         print("If you wish to quit, type 'quit'.")
         print("\nEnter abbreviated coin name (3~5 letters)")
+        flush()
         coinName = input("> ")
 
         if (coinName in getCoinInfo()):
