@@ -176,10 +176,10 @@ def mandatoryPrint():
     print("---------------------------------")
     print("Press m for modifying money/coins")
     print("Press r for removing a coin")
-    print("Pres c for getting all coin info")
+    print("Press c for getting all coin info")
     print("Press q to quit")
     print("---------------------------------")
-    print("")
+    print("You currently have {} coins!\n".format(len(getCoinInfo())))
 
 def addNewCoin(f):
     flush()
