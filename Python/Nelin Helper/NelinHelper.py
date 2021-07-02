@@ -1,5 +1,11 @@
 from tkinter import *
+from tkinter import messagebox
 import random
+
+def handler():
+    answer = messagebox.askokcancel("QUIT?", "Are you sure you want to quit?")
+    if (answer):
+        root.destroy()
 
 root = Tk()
 
@@ -50,5 +56,5 @@ l3.grid(row = 2, column = 1)
 result.set("-")
 
 
-
+root.protocol("WM_DELETE_WINDOW", handler)
 root.mainloop()
